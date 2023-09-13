@@ -28,3 +28,4 @@
 28 * trim 다듬다
 29 *** crouch 쪼그리고 앉다
 30 ** proclaim 공언하다, 선포하다
+31 ** project 프로젝트 
