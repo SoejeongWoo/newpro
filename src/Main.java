@@ -8,6 +8,8 @@ public class Main {
 
     // main 함수는 프로그램의 시작점이다
     public static void main(String[] args) throws IOException {
+        // TODO 애플리케이션에서 단어 목록 가지고 있기
+
         BufferedReader reader;
         BufferedWriter writer;
         Scanner scanner = new Scanner(System.in);
@@ -86,22 +88,41 @@ public class Main {
                 String keyword = scanner.next();
                 List<String> lines = readAllLines();
 
-                writer = new BufferedWriter(new FileWriter("dictionary.txt", false));
 
                 System.out.println("----------------------");
-                int number = 1;
                 for (int i=0; i<lines.size(); i++) {
                     String line = lines.get(i); // lines[i]
-                    if (line.contains(keyword)) { // 삭제할 단어는 화면에는 출력하고, 파일에는 쓰지 않는다
+                    if (line.contains(keyword)) {
                         System.out.println(line);
-                    } else { // 삭제하지 않을 단어는 출력하지 않고, 파일에 쓴다
-                        line = line.substring(line.indexOf('*')); // 숫자 자르기
-                        writer.write((number++) + " " + line + "\n");
                     }
                 }
                 System.out.println("----------------------");
+                System.out.print("삭제할 번호 선택 : ");
+                int number = scanner.nextInt();
+                System.out.print("정말로 삭제하실래요?(Y/n) : ");
+                String yN = scanner.next();
+
+                if (yN.equals("Y")) {
+                    writer = new BufferedWriter(new FileWriter("dictionary.txt", false));
+                    // 삭제
+                    int count = 1;
+                    for (int i=0; i<lines.size(); i++) {
+                        if (i+1 != number) { // 삭제 대상
+                            String line = lines.get(i);
+                            line = line.substring(line.indexOf('*')); // 숫자 자르기
+                            writer.write(count++ + " " + line + "\n");
+                        }
+                    }
+                    writer.flush(); // 버스 출발
+                    System.out.println();
+                    System.out.println("선택한 단어 삭제 완료 !!!");
+                } else {
+                    // 삭제하지 않는다
+                    System.out.println();
+                    System.out.println("선택한 단어 삭제 취소 !!!");
+                }
                 System.out.println();
-                writer.flush(); // 버스 출발
+
             }
         }
     }
