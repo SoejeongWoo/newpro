@@ -8,7 +8,7 @@ public class Main {
 
     // main 함수는 프로그램의 시작점이다
     public static void main(String[] args) throws IOException {
-        // TODO 애플리케이션에서 단어 목록 가지고 있기
+        List<String> lines = readAllLines(); // 난이도(*), 단어, 뜻
 
         BufferedReader reader;
         BufferedWriter writer;
@@ -31,28 +31,12 @@ public class Main {
             } else if (menuNumber == 1) { // 모든 단어 보기
                 System.out.println();
                 System.out.println("--------------------");
-                // 이 사이에?
-                List<String> lines = readAllLines();
                 for (int i=0; i<lines.size(); i++) {
-                    System.out.println(lines.get(i));
+                    System.out.println((i+1) + " " + lines.get(i));
                 }
-
                 System.out.println("--------------------");
                 System.out.println();
             } else if (menuNumber == 4) { // 단어 추가
-                // 단어장 만들기
-                FileReader fileReader = new FileReader("dictionary.txt");
-                reader = new BufferedReader(fileReader);
-
-                List<String> lines = new ArrayList<>();
-                while (true) {
-                    String line = reader.readLine();
-                    if (line == null) {
-                        break;
-                    }
-                    lines.add(line.substring(line.indexOf('*')));
-                }
-
                 // 단어 입력받기
                 System.out.println();
                 System.out.print("=> 난이도(1,2,3) & 새 단어 입력 : ");
@@ -73,27 +57,18 @@ public class Main {
                 newLine += " " + word + " " + meaning;
                 lines.add(newLine);
 
-                // 다시 파일에 쓰기
-                writer = new BufferedWriter(new FileWriter("dictionary.txt", false));
-                for (int i=0; i<lines.size(); i++) {
-                    writer.write((i+1) + " " + lines.get(i) + "\n");
-                }
-                writer.flush(); // 버스 출발
-
                 System.out.println();
                 System.out.println("새 단어가 단어장에 추가되었습니다.");
                 System.out.println();
             } else if (menuNumber == 6) { // 단어 삭제
                 System.out.print("=> 삭제할 단어 검색 : ");
                 String keyword = scanner.next();
-                List<String> lines = readAllLines();
-
 
                 System.out.println("----------------------");
                 for (int i=0; i<lines.size(); i++) {
                     String line = lines.get(i); // lines[i]
                     if (line.contains(keyword)) {
-                        System.out.println(line);
+                        System.out.println((i+1) + " " + line);
                     }
                 }
                 System.out.println("----------------------");
@@ -102,18 +77,9 @@ public class Main {
                 System.out.print("정말로 삭제하실래요?(Y/n) : ");
                 String yN = scanner.next();
 
-                if (yN.equals("Y")) {
-                    writer = new BufferedWriter(new FileWriter("dictionary.txt", false));
+                if (yN.equalsIgnoreCase("Y")) {
                     // 삭제
-                    int count = 1;
-                    for (int i=0; i<lines.size(); i++) {
-                        if (i+1 != number) { // 삭제 대상
-                            String line = lines.get(i);
-                            line = line.substring(line.indexOf('*')); // 숫자 자르기
-                            writer.write(count++ + " " + line + "\n");
-                        }
-                    }
-                    writer.flush(); // 버스 출발
+                    lines.remove(number - 1);
                     System.out.println();
                     System.out.println("선택한 단어 삭제 완료 !!!");
                 } else {
@@ -135,6 +101,7 @@ public class Main {
             if (line == null) { // 파일 끝났다
                 break;
             }
+            line = line.substring(line.indexOf('*'));
             lines.add(line);
         }
         return lines;
