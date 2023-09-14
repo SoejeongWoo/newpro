@@ -27,18 +27,14 @@ public class Main {
                 System.out.println();
                 System.out.println("프로그램 종료! 다음에 만나요~");
             } else if (menuNumber == 1) { // 모든 단어 보기
-                reader = new BufferedReader(new FileReader("dictionary.txt"));
-
                 System.out.println();
                 System.out.println("--------------------");
                 // 이 사이에?
-                while (true) {
-                    String line = reader.readLine();
-                    if (line == null) { // 파일 끝났다
-                        break;
-                    }
-                    System.out.println(line);
+                List<String> lines = readAllLines();
+                for (int i=0; i<lines.size(); i++) {
+                    System.out.println(lines.get(i));
                 }
+
                 System.out.println("--------------------");
                 System.out.println();
             } else if (menuNumber == 4) { // 단어 추가
@@ -54,8 +50,6 @@ public class Main {
                     }
                     lines.add(line.substring(line.indexOf('*')));
                 }
-
-
 
                 // 단어 입력받기
                 System.out.println();
@@ -87,9 +81,42 @@ public class Main {
                 System.out.println();
                 System.out.println("새 단어가 단어장에 추가되었습니다.");
                 System.out.println();
+            } else if (menuNumber == 6) { // 단어 삭제
+                System.out.print("=> 삭제할 단어 검색 : ");
+                String keyword = scanner.next();
+                List<String> lines = readAllLines();
+
+                writer = new BufferedWriter(new FileWriter("dictionary.txt", false));
+
+                System.out.println("----------------------");
+                int number = 1;
+                for (int i=0; i<lines.size(); i++) {
+                    String line = lines.get(i); // lines[i]
+                    if (line.contains(keyword)) { // 삭제할 단어는 화면에는 출력하고, 파일에는 쓰지 않는다
+                        System.out.println(line);
+                    } else { // 삭제하지 않을 단어는 출력하지 않고, 파일에 쓴다
+                        line = line.substring(line.indexOf('*')); // 숫자 자르기
+                        writer.write((number++) + " " + line + "\n");
+                    }
+                }
+                System.out.println("----------------------");
+                System.out.println();
+                writer.flush(); // 버스 출발
             }
         }
+    }
 
+    private static List<String> readAllLines() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("dictionary.txt"));
+        List<String> lines = new ArrayList<>();
+        while (true) {
+            String line = reader.readLine();
+            if (line == null) { // 파일 끝났다
+                break;
+            }
+            lines.add(line);
+        }
+        return lines;
     }
 
     private static void printMenu() {
