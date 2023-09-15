@@ -47,6 +47,12 @@ public class Main {
                 }
                 System.out.println("-------------------------------");
                 System.out.println();
+            } else if (menuNumber == 3) { // 단어 검색
+                System.out.println();
+                System.out.print("=> 검색할 단어 검색 : ");
+                String keyword = scanner.next();
+                search(words, keyword);
+                System.out.println();
             } else if (menuNumber == 4) { // 단어 추가
                 // 단어 입력받기
                 System.out.println();
@@ -75,14 +81,7 @@ public class Main {
                 System.out.print("=> 삭제할 단어 검색 : ");
                 String keyword = scanner.next();
 
-                System.out.println("----------------------");
-                for (int i=0; i<words.size(); i++) {
-                    Word word = words.get(i); // words[i]
-                    if (word.word.contains(keyword)) {
-                        System.out.println((i+1) + " " + word);
-                    }
-                }
-                System.out.println("----------------------");
+                search(words, keyword);
                 System.out.print("삭제할 번호 선택 : ");
                 int number = scanner.nextInt();
                 System.out.print("정말로 삭제하실래요?(Y/n) : ");
@@ -90,7 +89,19 @@ public class Main {
 
                 if (yN.equalsIgnoreCase("Y")) {
                     // 삭제
-                    words.remove(number - 1);
+                    int count = 0;
+                    int removeIndex = 0;
+                    for (int i=0; i<words.size(); i++) {
+                        Word word = words.get(i);
+                        if (word.word.contains(keyword)) {
+                            count = count + 1;
+                        }
+                        if (count == number) {
+                            removeIndex = i;
+                            break;
+                        }
+                    }
+                    words.remove(removeIndex);
                     System.out.println();
                     System.out.println("선택한 단어 삭제 완료 !!!");
                 } else {
@@ -110,6 +121,19 @@ public class Main {
                 System.out.println();
             }
         }
+    }
+
+    private static void search(List<Word> words, String keyword) {
+        int countNumber = 1;
+        System.out.println("----------------------");
+        for (int i = 0; i< words.size(); i++) {
+            Word word = words.get(i); // words[i]
+            if (word.word. contains(keyword)) {
+                System.out.println(countNumber + " " + word);
+                countNumber = countNumber + 1;
+            }
+        }
+        System.out.println("----------------------");
     }
 
     private static List<Word> readAllWords() throws IOException {
