@@ -1,10 +1,9 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
-public class Main {
+public class VocabularyApp {
 
     // main 함수는 프로그램의 시작점이다
     public static void main(String[] args) throws IOException {
@@ -12,18 +11,16 @@ public class Main {
         List<Word> words = printInOut.load(); // 난이도(*), 단어, 뜻
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("*** 영단어 마스터 ***");
-        System.out.println();
+        MenuPrinter.printBanner();
 
         int menuNumber = 1;
         while (menuNumber > 0 && menuNumber < 8) {
-            printMenu();
+            MenuPrinter.printMenu();
 
             menuNumber = scanner.nextInt();
 
             if (menuNumber == 0) { // 나가기
-                System.out.println();
-                System.out.println("프로그램 종료! 다음에 만나요~");
+                MenuPrinter.printExitMessage();
             } else if (menuNumber == 1) { // 모든 단어 보기
                 System.out.println();
                 System.out.println("--------------------");
@@ -164,18 +161,6 @@ public class Main {
         System.out.println("----------------------");
     }
 
-    private static void printMenu() {
-        System.out.println("****************");
-        System.out.println("1. 모든 단어 보기"); // => reader
-        System.out.println("2. 수준별 단어 보기");
-        System.out.println("3. 단어 검색");
-        System.out.println("4. 단어 추가"); // => writer
-        System.out.println("5. 단어 수정");
-        System.out.println("6. 단어 삭제");
-        System.out.println("7. 파일 저장");
-        System.out.println("0. 나가기");
-        System.out.println("****************");
-        System.out.print("=> 원하는 메뉴는? ");
-    }
+
 
 }
