@@ -1,5 +1,13 @@
-public interface PrintInOut {
-    void save();
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
-    void load();
+public interface PrintInOut {
+
+    // 저장
+    void save(List<Word> words) throws IOException;
+
+    // 불러오기
+    List<Word> load() throws IOException;
+
 }

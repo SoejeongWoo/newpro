@@ -8,16 +8,14 @@ public class Main {
 
     // main 함수는 프로그램의 시작점이다
     public static void main(String[] args) throws IOException {
-        List<Word> words = readAllWords(); // 난이도(*), 단어, 뜻
-
+        PrintInOut printInOut = new FilePrintInOut();
+        List<Word> words = printInOut.load(); // 난이도(*), 단어, 뜻
         Scanner scanner = new Scanner(System.in);
 
-        // cout << "*** 영단어 마스터 ***");
         System.out.println("*** 영단어 마스터 ***");
         System.out.println();
 
         int menuNumber = 1;
-
         while (menuNumber > 0 && menuNumber < 8) {
             printMenu();
 
@@ -145,11 +143,7 @@ public class Main {
                 }
                 System.out.println();
             } else if (menuNumber == 7) { // 단어 저장
-                BufferedWriter writer = new BufferedWriter(new FileWriter("dictionary.txt"));
-                for (int i=0; i<words.size(); i++) {
-                    writer.write((i+1) + " " + words.get(i) + "\n");
-                }
-                writer.flush();
+                printInOut.save(words);
                 System.out.println();
                 System.out.println("모든 단어 파일 저장 완료 !!!");
                 System.out.println();
@@ -168,30 +162,6 @@ public class Main {
             }
         }
         System.out.println("----------------------");
-    }
-
-    private static List<Word> readAllWords() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("dictionary.txt"));
-        List<Word> words = new ArrayList<>();
-        while (true) {
-            String line = reader.readLine(); // ** panda 푸바오
-            if (line == null) { // 파일 끝났다
-                break;
-            }
-            line = line.substring(line.indexOf('*'));
-
-            // ** executive 경영 간부, 임원
-            int firstSpace = line.indexOf(' ');
-            int secondSpace = line.indexOf(' ', firstSpace + 1);
-
-            Word word = new Word();
-            word.level = line.substring(0, firstSpace).length();
-            word.word = line.substring(firstSpace + 1, secondSpace);
-            word.meaning = line.substring(secondSpace + 1);
-
-            words.add(word);
-        }
-        return words;
     }
 
     private static void printMenu() {
