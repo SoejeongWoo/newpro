@@ -11,7 +11,6 @@ public class Main {
         List<String> lines = readAllLines(); // 난이도(*), 단어, 뜻
 
         BufferedReader reader;
-        BufferedWriter writer;
         Scanner scanner = new Scanner(System.in);
 
         // cout << "*** 영단어 마스터 ***");
@@ -36,6 +35,7 @@ public class Main {
                 }
                 System.out.println("--------------------");
                 System.out.println();
+
             } else if (menuNumber == 4) { // 단어 추가
                 // 단어 입력받기
                 System.out.println();
@@ -88,7 +88,15 @@ public class Main {
                     System.out.println("선택한 단어 삭제 취소 !!!");
                 }
                 System.out.println();
-
+            } else if (menuNumber == 7) { // 단어 저장
+                BufferedWriter writer = new BufferedWriter(new FileWriter("dictionary.txt"));
+                for (int i=0; i<lines.size(); i++) {
+                    writer.write((i+1) + " " + lines.get(i) + "\n");
+                }
+                writer.flush();
+                System.out.println();
+                System.out.println("모든 단어 파일 저장 완료 !!!");
+                System.out.println();
             }
         }
     }
