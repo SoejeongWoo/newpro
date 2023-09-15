@@ -33,6 +33,20 @@ public class Main {
                 System.out.println("--------------------");
                 System.out.println();
 
+            } else if (menuNumber == 2) { // 수준별 단어 보기
+                System.out.print("=> 레벨(1:초급, 2:중급, 3:고급) 선택 : ");
+                int level = scanner.nextInt();
+                System.out.println("-------------------------------");
+                int countNumber = 1;
+                for (int i=0; i<words.size(); i++) {
+                    Word word = words.get(i);
+                    if (word.level == level) {
+                        System.out.println((countNumber) + " " + word);
+                        countNumber = countNumber + 1;
+                    }
+                }
+                System.out.println("-------------------------------");
+                System.out.println();
             } else if (menuNumber == 4) { // 단어 추가
                 // 단어 입력받기
                 System.out.println();
