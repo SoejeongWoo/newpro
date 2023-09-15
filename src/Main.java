@@ -6,11 +6,13 @@ import java.util.Scanner;
 
 public class Main {
 
+    // main 함수는 프로그램의 시작점이다
     public static void main(String[] args) throws IOException {
         List<Word> words = readAllWords(); // 난이도(*), 단어, 뜻
 
         Scanner scanner = new Scanner(System.in);
 
+        // cout << "*** 영단어 마스터 ***");
         System.out.println("*** 영단어 마스터 ***");
         System.out.println();
 
@@ -76,6 +78,38 @@ public class Main {
 
                 System.out.println();
                 System.out.println("새 단어가 단어장에 추가되었습니다.");
+                System.out.println();
+            } else if (menuNumber == 5) {
+                System.out.println();
+                System.out.print("=> 수정할 단어 검색 : ");
+                String keyword = scanner.next();
+
+                search(words, keyword);
+
+                System.out.print("=> 수정할 번호 선택 : ");
+                int number = scanner.nextInt();
+                System.out.print("=> 뜻 입력 : ");
+                scanner.nextLine(); // 앞에 남아있는 엔터 버리기
+                String newMeaning = scanner.nextLine();
+
+                int count = 0;
+                int modifyIndex = 0;
+                for (int i=0; i<words.size(); i++) {
+                    Word word = words.get(i);
+                    if (word.word.contains(keyword)) {
+                        count = count + 1;
+                    }
+                    if (count == number) {
+                        modifyIndex = i;
+                        break;
+                    }
+                }
+
+                Word word = words.get(modifyIndex);
+                word.meaning = newMeaning;
+
+                System.out.println();
+                System.out.println("단어 수정이 성공적으로 되었습니다!!");
                 System.out.println();
             } else if (menuNumber == 6) { // 단어 삭제
                 System.out.print("=> 삭제할 단어 검색 : ");
